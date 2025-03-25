@@ -7,10 +7,11 @@ const port = 5000;
 net = require("net");
 
 var con = mysql.createConnection({
-  host: "srv1873.hstgr.io",
+  host: "193.203.184.227",
 
   user: "u144217274_rajkumar",
-  password: "Computers@2025"
+  password: "Computers@2025",
+  database: "u144217274_classic"
 });
 
 con.connect(function(err) {
@@ -19,8 +20,15 @@ con.connect(function(err) {
 });
 
 app.get('/', (req, res) => {
-  res.send('Hello, vijay');
+  con.query("SELECT * FROM user" , (err, result) => {
+    if (err) throw err;
+    
+   res.send(result);
+  });
 });
+
+
+
 console.log("this is  working");
 
 app.listen(port, () => {
