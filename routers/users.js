@@ -10,24 +10,34 @@ const verifyToken = require('./verifytoken.js')
 
 router.post('/signin', (req,res)=>{
   try{
-      console.log(req.body);
+      //console.log(req.body);
     
     con.query('SELECT * FROM user', async (err, result)=>{
     
     if (err) throw err;
-    
+    console.log(result);
     const userdetail = result.find(u => u.username === req.body.username);
+    
     if(!userdetail){
         res.status(404).send("Username does not exit");
       } 
     else{
+
+
+
      const validPassword = await bcrypt.compare(req.body.password, userdetail.password);
-     
+     console.log(userdetail.password);
      if(!validPassword) {
       res.status(400).send("Password does not match");
      }else{ 
        const token = jwt.sign({username: userdetail.username}, secretKey);
-     res.send({token});
+       const userInfo ={
+        tokenDetails: token,
+        username: userdetail.username,
+        schoolname: userdetail.schoolname,
+        role: userdetail.role
+       }
+     res.send(userInfo);
     }
     }  
     });
@@ -39,11 +49,11 @@ router.post('/signin', (req,res)=>{
 });
 
 router.post('/signup',async (req,res)=>{
-console.log(req.body);  
+
   const hashPassword = await bcrypt.hash(req.body.password, 10);
-  console.log(hashPassword); 
+  
   try{
-      con.query("INSERT INTO user (username, password) VALUES ('"+req.body.username+"', '"+hashPassword+"')",(err,result)=>{
+      con.query("INSERT INTO user (username, password, schoolname) VALUES ('"+req.body.username+"', '"+hashPassword+"','"+req.body.schoolname+"')",(err,result)=>{
           if(err) throw err;
           res.status(200).send(result);
       });
@@ -54,7 +64,14 @@ console.log(req.body);
 });
 
 router.get('/profile',verifyToken.verifytoken ,(req,res)=>{
-  res.send(`Member ${req.user.username}`)
+  
+  const userDetail = {
+    username:req.details[0].username,
+    schoolname:req.details[0].schoolname,
+    city:req.details[0].city,
+  }
+  console.log(req.details[0].username);
+  res.send(userDetail);
 //res.send(`Welcome ${req.user.username}`);
 });
   module.exports = router;

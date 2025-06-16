@@ -1,5 +1,6 @@
 const secretKey = 'abcde';
 const jwt = require('jsonwebtoken');
+const con = require('../db.js');
 
 
 const verifytoken = (req, res, next) =>{
@@ -10,9 +11,14 @@ const verifytoken = (req, res, next) =>{
 
         try{
         const verified = jwt.verify(token, secretKey);
-       // console.log(verified);
-        req.user = verified;
-        next();
+        con.query("SELECT * FROM user WHERE username = '"+verified.username+"'", async (err, result)=>{
+            if(err) throw err;
+            //console.log(result.username);
+           req.details = result;
+           next();
+        });
+       
+        
         }
         catch(err){
         res.status(400).send('Invalid Token');
