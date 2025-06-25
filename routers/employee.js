@@ -6,11 +6,11 @@ const bcrypt = require('bcrypt');
 const con = require('../db.js');
 const verifyToken = require('./verifytoken.js');
 
-router.get('/',verifyToken.verifytoken,(req, res)=>{
+router.get('/',(req, res)=>{
   try{
     
     
-      const employees = "SELECT * FROM employee";
+      const employees = "SELECT * FROM user";
   con.query(employees , (err, result) => {
     if (err) throw err;
     
