@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const usersRoutes = require('./routers/users.js');
-const employeeRoutes = require('./routers/employee.js');
+const teacherRoutes = require('./routers/teacher.js');
 const fieldsRoutes = require('./routers/fields.js');
 const ordersRoutes = require('./routers/orders.js');
 
@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 app.use('/api/orders', ordersRoutes);
 app.use('/api/fields', fieldsRoutes);
-app.use('/api/employee', employeeRoutes);
+app.use('/api/teacher', teacherRoutes);
 app.use('/api', usersRoutes);
 
 

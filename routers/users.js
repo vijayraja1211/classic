@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 const secretKey = 'abcde';
 const con = require('../db.js');
 const verifyToken = require('./verifytoken.js')
-
+ 
 
 router.post('/signin', (req,res)=>{
   try{
@@ -53,7 +53,7 @@ router.post('/signup',async (req,res)=>{
   const hashPassword = await bcrypt.hash(req.body.password, 10);
   
   try{
-      con.query("INSERT INTO user (username, password, schoolname) VALUES ('"+req.body.username+"', '"+hashPassword+"','"+req.body.schoolname+"')",(err,result)=>{
+      con.query("INSERT INTO user (username, password, schoolname, city, role) VALUES ('"+req.body.username+"', '"+hashPassword+"','"+req.body.schoolname+"','"+req.body.city+"','"+req.body.role+"')",(err,result)=>{
           if(err) throw err;
           res.status(200).send(result);
       });
