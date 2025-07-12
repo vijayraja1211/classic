@@ -35,7 +35,8 @@ router.post('/signin', (req,res)=>{
         tokenDetails: token,
         username: userdetail.username,
         schoolname: userdetail.schoolname,
-        role: userdetail.role
+        role: userdetail.role,
+        city: userdetail.city
        }
      res.send(userInfo);
     }
