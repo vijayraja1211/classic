@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 
 app.use('/api/orders', ordersRoutes);
 app.use('/api/fields', fieldsRoutes);
+
 app.use('/api/teacher', teacherRoutes);
 app.use('/api', usersRoutes);
 
